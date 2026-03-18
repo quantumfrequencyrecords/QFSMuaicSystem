@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <!-- Dark Matrix background -->
+  <rect width="192" height="192" fill="#0a0f1a"/>
+
+  <defs>
+    <!-- Teal-to-cyan gradient (exact match to your logo) -->
+    <linearGradient id="logoGrad" x1="20%" y1="30%" x2="80%" y2="70%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#7fffd4"/>
+      <stop offset="50%" stop-color="#00ff9f"/>
+      <stop offset="100%" stop-color="#00d4ff"/>
+    </linearGradient>
+
+    <!-- Glow filter for neon futuristic effect -->
+    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Extra outer glow for the rings and extensions -->
+    <filter id="outerGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6" result="outer"/>
+      <feMerge>
+        <feMergeNode in="outer"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Main orbital rings (multiple concentric glowing lines - exact to your image) -->
+  <!-- Outer ring -->
+  <circle cx="96" cy="96" r="74" fill="none" stroke="#00ff9f" stroke-width="3.5" opacity="0.75" filter="url(#outerGlow)"/>
+  
+  <!-- Mid ring 1 -->
+  <circle cx="96" cy="96" r="64" fill="none" stroke="#00d4ff" stroke-width="2.8" opacity="0.65"/>
+  
+  <!-- Mid ring 2 (with slight offset for depth) -->
+  <circle cx="96" cy="96" r="54" fill="none" stroke="#7fffd4" stroke-width="2.2" opacity="0.55"/>
+  
+  <!-- Inner ring -->
+  <circle cx="96" cy="96" r="44" fill="none" stroke="#00ff9f" stroke-width="1.8" opacity="0.4"/>
+
+  <!-- Small accent arcs at top & bottom (matching the arrow-like elements in your logo) -->
+  <!-- Top accent arc -->
+  <path d="M48 48 A48 48 0 0 1 144 48" fill="none" stroke="#00ff9f" stroke-width="4" opacity="0.35"/>
+  <!-- Bottom accent arc -->
+  <path d="M48 144 A48 48 0 0 1 144 144" fill="none" stroke="#00d4ff" stroke-width="4" opacity="0.35"/>
+
+  <!-- QF Letters - large, bold, glowing (exact proportions & positioning from your image) -->
+  <!-- Q - left side -->
+  <text 
+    x="64" 
+    y="118" 
+    font-family="Arial Black, sans-serif" 
+    font-size="92" 
+    font-weight="900" 
+    fill="url(#logoGrad)" 
+    stroke="#0a0f1a" 
+    stroke-width="4" 
+    paint-order="stroke fill" 
+    filter="url(#neonGlow)" 
+    text-anchor="middle" 
+    letter-spacing="-4">Q</text>
+
+  <!-- F - right side (with the flowing internal style captured via stroke & glow) -->
+  <text 
+    x="129" 
+    y="118" 
+    font-family="Arial Black, sans-serif" 
+    font-size="92" 
+    font-weight="900" 
+    fill="url(#logoGrad)" 
+    stroke="#0a0f1a" 
+    stroke-width="4" 
+    paint-order="stroke fill" 
+    filter="url(#neonGlow)" 
+    text-anchor="middle" 
+    letter-spacing="-2">F</text>
+
+  <!-- Left extension wave line (flowing from Q with dot end - exact to your logo) -->
+  <!-- Multi-line wave for depth -->
+  <path d="M12 96 Q28 72 48 96" fill="none" stroke="#00ff9f" stroke-width="5.5" opacity="0.85" filter="url(#neonGlow)"/>
+  <path d="M14 96 Q29 75 47 96" fill="none" stroke="#00d4ff" stroke-width="3.5" opacity="0.7" filter="url(#neonGlow)"/>
+  
+  <!-- Left end sphere (glowing dot) -->
+  <circle cx="8" cy="96" r="5.5" fill="#00ff9f" filter="url(#outerGlow)"/>
+
+  <!-- Right extension wave line (flowing from F with dot end - exact to your logo) -->
+  <!-- Multi-line wave for depth -->
+  <path d="M144 96 Q160 72 180 96" fill="none" stroke="#00d4ff" stroke-width="5.5" opacity="0.85" filter="url(#neonGlow)"/>
+  <path d="M146 96 Q161 75 179 96" fill="none" stroke="#00ff9f" stroke-width="3.5" opacity="0.7" filter="url(#neonGlow)"/>
+  
+  <!-- Right end sphere (glowing dot) -->
+  <circle cx="184" cy="96" r="5.5" fill="#00ff9f" filter="url(#outerGlow)"/>
+
+  <!-- Subtle inner wave detail across the QF connection (matching the flowing lines in your image) -->
+  <path d="M55 105 Q80 88 110 105 Q125 115 135 98" fill="none" stroke="#7fffd4" stroke-width="2" opacity="0.45" filter="url(#neonGlow)"/>
+
+</svg>
