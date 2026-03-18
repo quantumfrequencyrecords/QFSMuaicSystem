@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Suno Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PWA -->
+  <link rel="manifest" href="app.webmanifest">
+  <meta name="theme-color" content="#111111">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+    }
+
+    header {
+      padding: 15px;
+      background: #1a1a1a;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 15px;
+    }
+
+    select, button, textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+
+    button {
+      background: #2ecc71;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #444;
+      color: #fff;
+    }
+
+    textarea {
+      height: 140px;
+      resize: vertical;
+    }
+
+    .card {
+      background: #1c1c1c;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+
+    .small {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>🎵 Suno Hub</header>
+
+<div class="container">
+
+  <label>Select Artist</label>
+  <select id="artistSelect"></select>
+
+  <button onclick="generatePrompt()">Generate Prompt</button>
+
+  <textarea id="output" placeholder="Generated prompt will appear here..."></textarea>
+
+  <button onclick="copyPrompt()">Copy Prompt</button>
+  <button class="secondary" onclick="saveFavorite()">Save Favorite</button>
+
+  <div class="card">
+    <div><strong>Favorites</strong></div>
+    <div id="favorites"></div>
+  </div>
+
+</div>
+
+<script>
+var ARTISTS = {};
+var FAVORITES_KEY = "sh_favs";
+
+function init() {
+  loadManifest();
+  loadFavorites();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+}
+
+function loadManifest() {
+  fetch("manifest.json?v=" + Date.now())
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      loadFiles(data.files);
+    });
+}
+
+function loadFiles(files) {
+  var loaded = 0;
+
+  files.forEach(function(file){
+    fetch(file)
+      .then(function(res){ return res.json(); })
+      .then(function(json){
+        ARTISTS[json.id] = json;
+        loaded++;
+        if (loaded === files.length) populateArtists();
+      });
+  });
+}
+
+function populateArtists() {
+  var select = document.getElementById("artistSelect");
+  select.innerHTML = "";
+
+  for (var id in ARTISTS) {
+    var opt = document.createElement("option");
+    opt.value = id;
+    opt.textContent = ARTISTS[id].name;
+    select.appendChild(opt);
+  }
+}
+
+function generatePrompt() {
+  var id = document.getElementById("artistSelect").value;
+  var artist = ARTISTS[id];
+
+  if (!artist) return;
+
+  var prompt = "";
+
+  prompt += "Style: " + artist.style.join(", ") + "\n";
+  prompt += "Mood: " + artist.mood.join(", ") + "\n";
+  prompt += "Instruments: " + artist.instruments.join(", ") + "\n";
+  prompt += "Themes: " + artist.themes.join(", ");
+
+  document.getElementById("output").value = prompt;
+}
+
+function copyPrompt() {
+  var text = document.getElementById("output");
+  text.select();
+  document.execCommand("copy");
+  alert("Copied!");
+}
+
+function saveFavorite() {
+  var val = document.getElementById("output").value;
+  if (!val) return;
+
+  var favs = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+  favs.unshift(val);
+
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
+  loadFavorites();
+}
+
+function loadFavorites() {
+  var favs = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+  var container = document.getElementById("favorites");
+
+  container.innerHTML = "";
+
+  favs.forEach(function(fav){
+    var div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = "<div class='small'>" + fav + "</div>";
+    container.appendChild(div);
+  });
+}
+
+init();
+</script>
+
+</body>
+</html>
